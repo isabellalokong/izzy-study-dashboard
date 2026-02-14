@@ -1,83 +1,80 @@
+let week = Number(localStorage.getItem("week")) || 1;
+
+document.getElementById("weekTitle").textContent = "Week " + week;
+
 let tasks = JSON.parse(localStorage.getItem("tasks")) || [
-  { name: "Biology Assignment", due: "2026-02-15", done: false },
-  { name: "Chemistry Test", due: "2026-02-14", done: false },
-  { name: "Algebra Notes", due: "2026-02-13", done: true }
+  { name:"Biology Assignment", done:false },
+  { name:"Chemistry Notes", done:false }
 ];
 
-function saveTasks() {
+function save() {
   localStorage.setItem("tasks", JSON.stringify(tasks));
-}
-
-function getPriority(task) {
-  if (task.done) return "green";
-
-  const today = new Date();
-  const dueDate = new Date(task.due);
-  const diff = (dueDate - today) / (1000 * 60 * 60 * 24);
-
-  if (diff < 0) return "red";
-  if (diff <= 1) return "red";
-  if (diff <= 3) return "yellow";
-  return "yellow";
+  localStorage.setItem("week", week);
 }
 
 function renderTasks() {
   const list = document.getElementById("todo-list");
-  list.innerHTML = "";
+  list.innerHTML="";
 
-  tasks.forEach((task, index) => {
-    const li = document.createElement("li");
-    const priority = getPriority(task);
-    li.className = `todo-item ${priority}`;
-    li.textContent = `${task.name} (due ${task.due})`;
+  tasks.forEach((task,i)=>{
+    const li=document.createElement("li");
+    li.textContent=task.name;
+    li.className="todo-item "+(task.done?"green":"red");
 
-    li.onclick = () => {
-      tasks[index].done = !tasks[index].done;
-      saveTasks();
+    li.onclick=()=>{
+      task.done=!task.done;
+      save();
       renderTasks();
-      updateGrades();
+      updateProgress();
+      checkWeekComplete();
     };
 
     list.appendChild(li);
   });
 }
 
-function updateGrades() {
-  let completed = tasks.filter(t => t.done).length;
-  let total = tasks.length;
-  let percent = Math.round((completed / total) * 100);
+function updateProgress() {
+  let done = tasks.filter(t=>t.done).length;
+  let percent = Math.round((done/tasks.length)*100);
 
-  ["bio","chem","alg","eng"].forEach(id => {
-    document.getElementById(id+"-grade").textContent = percent+"%";
-    document.getElementById(id+"-progress").style.width = percent+"%";
+  ["bio","chem","alg","eng"].forEach(id=>{
+    document.getElementById(id+"-progress").style.width=percent+"%";
+    document.getElementById(id+"-grade").textContent=percent+"%";
   });
 }
 
-// Fire streak
-let lastLogin = localStorage.getItem("lastLogin");
-let streak = Number(localStorage.getItem("streak")) || 0;
-let today = new Date().toDateString();
-
-if (lastLogin !== today) {
-  streak++;
-  localStorage.setItem("streak", streak);
-  localStorage.setItem("lastLogin", today);
+function checkWeekComplete() {
+  if(tasks.every(t=>t.done)) {
+    week++;
+    tasks=[];
+    save();
+    alert("Week unlocked!");
+    document.getElementById("weekTitle").textContent="Week "+week;
+  }
 }
 
-document.getElementById("fireFill").style.height = Math.min(streak*20,100) + "%";
+// Fire streak
+let lastLogin=localStorage.getItem("lastLogin");
+let today=new Date().toDateString();
+let streak=Number(localStorage.getItem("streak"))||0;
 
-// Add task button
-document.getElementById("addTaskBtn").onclick = () => {
-  let name = prompt("Task name:");
-  let due = prompt("Due date (YYYY-MM-DD):");
+if(lastLogin!==today){
+  streak++;
+  localStorage.setItem("streak",streak);
+  localStorage.setItem("lastLogin",today);
+}
 
-  if(name && due) {
-    tasks.push({name, due, done:false});
-    saveTasks();
+document.getElementById("fireFill").style.height=Math.min(streak*20,100)+"%";
+
+document.getElementById("addTaskBtn").onclick=()=>{
+  let name=prompt("Task name:");
+  if(name){
+    tasks.push({name,done:false});
+    save();
     renderTasks();
-    updateGrades();
+    updateProgress();
   }
 };
 
 renderTasks();
-updateGrades();
+updateProgress();

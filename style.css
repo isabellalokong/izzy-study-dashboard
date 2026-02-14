@@ -1,0 +1,92 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #111;
+  color: white;
+}
+
+.app {
+  display: flex;
+  height: 100vh;
+}
+
+/* LEFT */
+.left-panel {
+  width: 30%;
+  background: #1b1b1b;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.subject-card {
+  background: #222;
+  padding: 15px;
+  border-radius: 10px;
+  margin-bottom: 15px;
+  box-shadow: 0 0 10px rgba(255,255,255,0.05);
+}
+
+.subject-card.late {
+  box-shadow: 0 0 15px red;
+}
+
+.progress {
+  background: #333;
+  height: 10px;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.progress-bar {
+  height: 100%;
+  background: linear-gradient(to right, orange, red);
+  width: 0%;
+}
+
+/* RIGHT */
+.right-panel {
+  width: 70%;
+  padding: 20px;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.fire {
+  width: 40px;
+  height: 60px;
+  border: 2px solid orange;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.fire-fill {
+  height: 0%;
+  background: linear-gradient(to top, orange, red, yellow);
+  transition: height 0.5s;
+}
+
+/* TODO */
+#todo-list {
+  list-style: none;
+  padding: 0;
+}
+
+.todo-item {
+  padding: 10px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+.red { background: #7a1c1c; }
+.yellow { background: #7a6a1c; }
+.green { background: #1c7a3a; }
+
+.calendar {
+  background: #222;
+  padding: 20px;
+  border-radius: 10px;
+}

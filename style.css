@@ -5,17 +5,10 @@ background:#f4f4f4;
 transition:0.3s;
 }
 
-.dark {
-background:#2a2a2a;
-color:white;
-}
+.dark {background:#2a2a2a;color:white;}
 
-.app {
-display:flex;
-height:100vh;
-}
+.app {display:flex;height:100vh;}
 
-/* LEFT */
 .left-panel {
 width:28%;
 background:#eee;
@@ -30,8 +23,11 @@ padding:15px;
 border-radius:20px;
 margin-bottom:20px;
 position:relative;
-animation:fadeIn 0.5s ease;
+cursor:pointer;
+transition:transform 0.2s;
 }
+
+.subject-card:hover {transform:scale(1.03);}
 
 .subject-card::before {
 content:"";
@@ -76,9 +72,7 @@ justify-content:space-between;
 align-items:center;
 }
 
-.fire {
-font-size:22px;
-}
+.fire {font-size:22px;}
 
 /* WEEK CARD */
 .week-card {
@@ -93,22 +87,17 @@ position:relative;
 content:"🎉";
 position:absolute;
 inset:0;
-filter:blur(15px);
-opacity:0.1;
+filter:blur(20px);
+opacity:0.08;
 }
 
-/* TODO */
-#todo-list {
-list-style:none;
-padding:0;
-}
+#todo-list {list-style:none;padding:0;}
 
 .todo-item {
 background:white;
 padding:15px;
 border-radius:15px;
 margin-bottom:10px;
-animation:slideUp 0.4s ease;
 }
 
 .red{border-left:6px solid #FF69EB;}
@@ -123,17 +112,39 @@ cursor:pointer;
 font-size:20px;
 }
 
+/* SUBJECT PANEL */
+.subject-panel {
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.3);
+display:none;
+justify-content:center;
+align-items:center;
+animation:fadeIn 0.3s ease;
+}
+
+.subject-content {
+background:white;
+padding:30px;
+border-radius:25px;
+width:60%;
+animation:slideUp 0.4s ease;
+}
+
 .dark .left-panel {background:#333;}
 .dark .subject-card,
 .dark .week-card,
-.dark .todo-item {background:#444;color:white;}
+.dark .todo-item,
+.dark .subject-content {background:#444;color:white;}
 
 @keyframes fadeIn {
-from{opacity:0;transform:translateY(10px);}
-to{opacity:1;}
+from{opacity:0;} to{opacity:1;}
 }
 
 @keyframes slideUp {
-from{opacity:0;transform:translateY(15px);}
-to{opacity:1;}
+from{transform:translateY(30px);opacity:0;}
+to{transform:translateY(0);opacity:1;}
 }

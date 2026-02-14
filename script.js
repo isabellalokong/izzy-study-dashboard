@@ -1,27 +1,83 @@
-// Progress bars
-document.getElementById("bio-progress").style.width = "85%";
-document.getElementById("chem-progress").style.width = "90%";
-document.getElementById("alg-progress").style.width = "88%";
-document.getElementById("eng-progress").style.width = "92%";
-
-// Fire streak
-let streak = 3; // example
-let fireFill = document.getElementById("fireFill");
-fireFill.style.height = streak * 20 + "%";
-
-// To Do List
-const tasks = [
-  { name: "Biology Assignment 1", status: "red" },
-  { name: "Chemistry Test", status: "yellow" },
-  { name: "Algebra Notes", status: "red" },
-  { name: "English Project", status: "green" }
+let tasks = JSON.parse(localStorage.getItem("tasks")) || [
+  { name: "Biology Assignment", due: "2026-02-15", done: false },
+  { name: "Chemistry Test", due: "2026-02-14", done: false },
+  { name: "Algebra Notes", due: "2026-02-13", done: true }
 ];
 
-const todoList = document.getElementById("todo-list");
+function saveTasks() {
+  localStorage.setItem("tasks", JSON.stringify(tasks));
+}
 
-tasks.forEach(task => {
-  const li = document.createElement("li");
-  li.textContent = task.name;
-  li.className = `todo-item ${task.status}`;
-  todoList.appendChild(li);
-});
+function getPriority(task) {
+  if (task.done) return "green";
+
+  const today = new Date();
+  const dueDate = new Date(task.due);
+  const diff = (dueDate - today) / (1000 * 60 * 60 * 24);
+
+  if (diff < 0) return "red";
+  if (diff <= 1) return "red";
+  if (diff <= 3) return "yellow";
+  return "yellow";
+}
+
+function renderTasks() {
+  const list = document.getElementById("todo-list");
+  list.innerHTML = "";
+
+  tasks.forEach((task, index) => {
+    const li = document.createElement("li");
+    const priority = getPriority(task);
+    li.className = `todo-item ${priority}`;
+    li.textContent = `${task.name} (due ${task.due})`;
+
+    li.onclick = () => {
+      tasks[index].done = !tasks[index].done;
+      saveTasks();
+      renderTasks();
+      updateGrades();
+    };
+
+    list.appendChild(li);
+  });
+}
+
+function updateGrades() {
+  let completed = tasks.filter(t => t.done).length;
+  let total = tasks.length;
+  let percent = Math.round((completed / total) * 100);
+
+  ["bio","chem","alg","eng"].forEach(id => {
+    document.getElementById(id+"-grade").textContent = percent+"%";
+    document.getElementById(id+"-progress").style.width = percent+"%";
+  });
+}
+
+// Fire streak
+let lastLogin = localStorage.getItem("lastLogin");
+let streak = Number(localStorage.getItem("streak")) || 0;
+let today = new Date().toDateString();
+
+if (lastLogin !== today) {
+  streak++;
+  localStorage.setItem("streak", streak);
+  localStorage.setItem("lastLogin", today);
+}
+
+document.getElementById("fireFill").style.height = Math.min(streak*20,100) + "%";
+
+// Add task button
+document.getElementById("addTaskBtn").onclick = () => {
+  let name = prompt("Task name:");
+  let due = prompt("Due date (YYYY-MM-DD):");
+
+  if(name && due) {
+    tasks.push({name, due, done:false});
+    saveTasks();
+    renderTasks();
+    updateGrades();
+  }
+};
+
+renderTasks();
+updateGrades();

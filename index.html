@@ -14,25 +14,25 @@
 
 <div class="left-panel">
 
-  <div class="subject-card pink">
+  <div class="subject-card pink" onclick="openPanel('bio')">
     <h3>Biology</h3>
     <div class="progress"><div id="bio-progress"></div></div>
     <span id="bio-grade">0%</span>
   </div>
 
-  <div class="subject-card purple">
+  <div class="subject-card purple" onclick="openPanel('chem')">
     <h3>Chemistry</h3>
     <div class="progress"><div id="chem-progress"></div></div>
     <span id="chem-grade">0%</span>
   </div>
 
-  <div class="subject-card peach">
+  <div class="subject-card peach" onclick="openPanel('alg')">
     <h3>Algebra 2</h3>
     <div class="progress"><div id="alg-progress"></div></div>
     <span id="alg-grade">0%</span>
   </div>
 
-  <div class="subject-card yellow">
+  <div class="subject-card yellow" onclick="openPanel('eng')">
     <h3>English</h3>
     <div class="progress"><div id="eng-progress"></div></div>
     <span id="eng-grade">0%</span>
@@ -57,6 +57,15 @@
 
 </div>
 
+</div>
+
+<!-- SUBJECT PANEL -->
+<div class="subject-panel" id="subjectPanel">
+  <div class="subject-content">
+    <h2 id="subjectTitle"></h2>
+    <p>Assignments, lessons, and notes will go here.</p>
+    <button onclick="closePanel()">Close</button>
+  </div>
 </div>
 
 <script src="script.js"></script>

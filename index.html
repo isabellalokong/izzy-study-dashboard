@@ -1,58 +1,61 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Izzy Study Dashboard</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<title>Izzy Dashboard</title>
+<link rel="stylesheet" href="style.css">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
 </head>
 <body>
 
+<div class="theme-toggle" id="themeToggle">🌙</div>
+
 <div class="app">
 
-  <div class="left-panel">
-    <h2>Classes</h2>
+<div class="left-panel">
 
-    <div class="subject-card pink" id="bio-card">
-      <h3>Biology</h3>
-      <div class="progress"><div class="progress-bar" id="bio-progress"></div></div>
-      <p id="bio-grade">0%</p>
-    </div>
-
-    <div class="subject-card purple" id="chem-card">
-      <h3>Chemistry</h3>
-      <div class="progress"><div class="progress-bar" id="chem-progress"></div></div>
-      <p id="chem-grade">0%</p>
-    </div>
-
-    <div class="subject-card peach" id="alg-card">
-      <h3>Algebra 2</h3>
-      <div class="progress"><div class="progress-bar" id="alg-progress"></div></div>
-      <p id="alg-grade">0%</p>
-    </div>
-
-    <div class="subject-card yellow" id="eng-card">
-      <h3>English</h3>
-      <div class="progress"><div class="progress-bar" id="eng-progress"></div></div>
-      <p id="eng-grade">0%</p>
-    </div>
+  <div class="subject-card pink">
+    <h3>Biology</h3>
+    <div class="progress"><div id="bio-progress"></div></div>
+    <span id="bio-grade">0%</span>
   </div>
 
-  <div class="right-panel">
-
-    <div class="header">
-      <h1>Izzy</h1>
-      <div class="fire">
-        <div class="fire-fill" id="fireFill"></div>
-      </div>
-    </div>
-
-    <h2 id="weekTitle">Week 1</h2>
-
-    <ul id="todo-list"></ul>
-
-    <button id="addTaskBtn">+ Add Task</button>
-
+  <div class="subject-card purple">
+    <h3>Chemistry</h3>
+    <div class="progress"><div id="chem-progress"></div></div>
+    <span id="chem-grade">0%</span>
   </div>
+
+  <div class="subject-card peach">
+    <h3>Algebra 2</h3>
+    <div class="progress"><div id="alg-progress"></div></div>
+    <span id="alg-grade">0%</span>
+  </div>
+
+  <div class="subject-card yellow">
+    <h3>English</h3>
+    <div class="progress"><div id="eng-progress"></div></div>
+    <span id="eng-grade">0%</span>
+  </div>
+
+</div>
+
+<div class="right-panel">
+
+<div class="top-bar">
+<h1>Izzy</h1>
+<div class="fire">🔥 <span id="fireCount">0</span></div>
+</div>
+
+<div class="week-card">
+<h2 id="weekTitle">Week 1</h2>
+<div class="progress"><div id="week-progress"></div></div>
+<span id="week-percent">0%</span>
+</div>
+
+<ul id="todo-list"></ul>
+
+</div>
 
 </div>
 

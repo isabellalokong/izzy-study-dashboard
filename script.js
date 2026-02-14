@@ -1,70 +1,99 @@
-let week=Number(localStorage.getItem("week"))||1;
+/********************
+ CORE DATA
+********************/
 
-let tasks=[
-{name:"Biology Assignment",due:1},
-{name:"Chemistry Notes",due:2},
-{name:"English Reading",due:3}
-];
+const TOTAL_WEEKS = 8;
+let currentWeek = Number(localStorage.getItem("currentWeek")) || 1;
 
-function autoPriority(){
-tasks.sort((a,b)=>a.due-b.due);
-}
+const subjects = ["Biology","Chemistry","Algebra 2","English"];
 
-function renderTasks(){
-autoPriority();
-const list=document.getElementById("todo-list");
-list.innerHTML="";
-tasks.forEach(task=>{
-const li=document.createElement("li");
-let color="yellow";
-if(task.due===1) color="red";
-if(task.due>2) color="green";
-li.className=`todo-item ${color}`;
-li.textContent=task.name;
-list.appendChild(li);
-});
-}
-
-function updateProgress(){
-let percent=Math.round((week/8)*100);
-document.getElementById("week-progress").style.width=percent+"%";
-document.getElementById("week-percent").textContent=percent+"%";
-
-["bio","chem","alg","eng"].forEach(id=>{
-document.getElementById(id+"-progress").style.width=percent+"%";
-document.getElementById(id+"-grade").textContent=percent+"%";
-});
-}
-
-// FIRE TIME BASED
-let fire=Number(localStorage.getItem("fire"))||0;
-let lastDay=localStorage.getItem("day");
-let today=new Date().toDateString();
-
-if(today!==lastDay){
-fire++;
-localStorage.setItem("fire",fire);
-localStorage.setItem("day",today);
-}
-
-document.getElementById("fireCount").textContent=fire;
-
-// SUBJECT PANEL
-function openPanel(subject){
-document.getElementById("subjectPanel").style.display="flex";
-document.getElementById("subjectTitle").textContent=subject.toUpperCase();
-}
-
-function closePanel(){
-document.getElementById("subjectPanel").style.display="none";
-}
-
-// THEME
-document.getElementById("themeToggle").onclick=()=>{
-document.body.classList.toggle("dark");
+let progress = JSON.parse(localStorage.getItem("progress")) || {
+  Biology:0,
+  Chemistry:0,
+  "Algebra 2":0,
+  English:0,
+  week:0
 };
 
-document.getElementById("weekTitle").textContent="Week "+week;
+let fire = Number(localStorage.getItem("fire")) || 0;
+let lastDay = localStorage.getItem("lastDay");
 
-renderTasks();
-updateProgress();
+/********************
+ CURRICULUM
+********************/
+
+const curriculum = {
+  1: {
+    Biology: {
+      lesson: "Cell structure and function",
+      assignments: [
+        "Label a cell diagram",
+        "Explain mitochondria",
+        "5 cell questions"
+      ],
+      test: "Cell biology quiz",
+      project: "Create a cell infographic"
+    },
+    Chemistry: {
+      lesson: "Atomic structure",
+      assignments: [
+        "Protons neutrons electrons",
+        "Periodic table basics",
+        "5 atom questions"
+      ],
+      test: "Atoms quiz",
+      project: "Build an atom model"
+    },
+    "Algebra 2": {
+      lesson: "Quadratic equations",
+      assignments: [
+        "Solve 5 quadratics",
+        "Graph a parabola",
+        "Word problems"
+      ],
+      test: "Quadratic quiz",
+      project: "Real-life parabola project"
+    },
+    English: {
+      lesson: "Theme and symbolism",
+      assignments: [
+        "Short reading",
+        "Theme questions",
+        "Paragraph response"
+      ],
+      test: "Theme quiz",
+      project: "Mini essay"
+    }
+  }
+};
+
+/********************
+ DAILY TASK SYSTEM
+********************/
+
+let tasks = JSON.parse(localStorage.getItem("tasks")) || generateTasks();
+
+function generateTasks(){
+  let list = [];
+  let weekData = curriculum[currentWeek];
+
+  subjects.forEach(sub=>{
+    list.push({name:`${sub} Lesson: ${weekData[sub].lesson}`,type:"lesson",done:false});
+    weekData[sub].assignments.forEach(a=>{
+      list.push({name:`${sub} Assignment: ${a}`,type:"assignment",done:false});
+    });
+    list.push({name:`${sub} Test`,type:"test",done:false});
+  });
+
+  list.push({name:"Project (bi-weekly)",type:"project",done:false});
+
+  localStorage.setItem("tasks",JSON.stringify(list));
+  return list;
+}
+
+/********************
+ FIRE SYSTEM (TIME BASED)
+********************/
+
+const today = new Date().toDateString();
+if(today !==

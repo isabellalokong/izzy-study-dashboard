@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Izzy Study Dashboard</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<div class="app">
+
+  <!-- LEFT PANEL -->
+  <div class="left-panel">
+    <h2>Subjects</h2>
+
+    <div class="subject-card late">
+      <h3>Biology</h3>
+      <p>Grade: <span id="bio-grade">85%</span></p>
+      <div class="progress">
+        <div class="progress-bar" id="bio-progress"></div>
+      </div>
+    </div>
+
+    <div class="subject-card">
+      <h3>Chemistry</h3>
+      <p>Grade: <span id="chem-grade">90%</span></p>
+      <div class="progress">
+        <div class="progress-bar" id="chem-progress"></div>
+      </div>
+    </div>
+
+    <div class="subject-card">
+      <h3>Algebra 2</h3>
+      <p>Grade: <span id="alg-grade">88%</span></p>
+      <div class="progress">
+        <div class="progress-bar" id="alg-progress"></div>
+      </div>
+    </div>
+
+    <div class="subject-card">
+      <h3>English</h3>
+      <p>Grade: <span id="eng-grade">92%</span></p>
+      <div class="progress">
+        <div class="progress-bar" id="eng-progress"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT PANEL -->
+  <div class="right-panel">
+    <div class="header">
+      <h1>Izzy 🔥</h1>
+      <div class="fire">
+        <div class="fire-fill" id="fireFill"></div>
+      </div>
+    </div>
+
+    <h2>To Do List</h2>
+    <ul id="todo-list"></ul>
+
+    <h2>Calendar</h2>
+    <div class="calendar">
+      <p>Calendar coming soon</p>
+    </div>
+  </div>
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

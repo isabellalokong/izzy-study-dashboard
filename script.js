@@ -1,41 +1,34 @@
-let week = Number(localStorage.getItem("week")) || 1;
-
-document.getElementById("weekTitle").textContent = "Week " + week;
-
-let tasks = JSON.parse(localStorage.getItem("tasks")) || [
-  { name:"Biology Assignment", done:false },
-  { name:"Chemistry Notes", done:false }
+let tasks = [
+  {name:"Biology Assignment", due:1},
+  {name:"Chemistry Notes", due:2},
+  {name:"English Reading", due:3}
 ];
 
-function save() {
-  localStorage.setItem("tasks", JSON.stringify(tasks));
-  localStorage.setItem("week", week);
+let week = Number(localStorage.getItem("week"))||1;
+
+function autoPriority(){
+  tasks.sort((a,b)=>a.due-b.due);
 }
 
-function renderTasks() {
-  const list = document.getElementById("todo-list");
+function renderTasks(){
+  autoPriority();
+  const list=document.getElementById("todo-list");
   list.innerHTML="";
-
-  tasks.forEach((task,i)=>{
+  tasks.forEach(task=>{
     const li=document.createElement("li");
+    let color="yellow";
+    if(task.due===1) color="red";
+    if(task.due>2) color="green";
+    li.className=`todo-item ${color}`;
     li.textContent=task.name;
-    li.className="todo-item "+(task.done?"green":"red");
-
-    li.onclick=()=>{
-      task.done=!task.done;
-      save();
-      renderTasks();
-      updateProgress();
-      checkWeekComplete();
-    };
-
     list.appendChild(li);
   });
 }
 
-function updateProgress() {
-  let done = tasks.filter(t=>t.done).length;
-  let percent = Math.round((done/tasks.length)*100);
+function updateProgress(){
+  let percent=Math.round((week/8)*100);
+  document.getElementById("week-progress").style.width=percent+"%";
+  document.getElementById("week-percent").textContent=percent+"%";
 
   ["bio","chem","alg","eng"].forEach(id=>{
     document.getElementById(id+"-progress").style.width=percent+"%";
@@ -43,38 +36,26 @@ function updateProgress() {
   });
 }
 
-function checkWeekComplete() {
-  if(tasks.every(t=>t.done)) {
-    week++;
-    tasks=[];
-    save();
-    alert("Week unlocked!");
-    document.getElementById("weekTitle").textContent="Week "+week;
-  }
-}
-
-// Fire streak
-let lastLogin=localStorage.getItem("lastLogin");
+// FIRE AUTO TIME
+let fire=Number(localStorage.getItem("fire"))||0;
+let lastDay=localStorage.getItem("day");
 let today=new Date().toDateString();
-let streak=Number(localStorage.getItem("streak"))||0;
 
-if(lastLogin!==today){
-  streak++;
-  localStorage.setItem("streak",streak);
-  localStorage.setItem("lastLogin",today);
+if(today!==lastDay){
+  fire++;
+  localStorage.setItem("fire",fire);
+  localStorage.setItem("day",today);
 }
 
-document.getElementById("fireFill").style.height=Math.min(streak*20,100)+"%";
+document.getElementById("fireCount").textContent=fire;
 
-document.getElementById("addTaskBtn").onclick=()=>{
-  let name=prompt("Task name:");
-  if(name){
-    tasks.push({name,done:false});
-    save();
-    renderTasks();
-    updateProgress();
-  }
+// THEME TOGGLE
+const toggle=document.getElementById("themeToggle");
+toggle.onclick=()=>{
+  document.body.classList.toggle("dark");
 };
+
+document.getElementById("weekTitle").textContent="Week "+week;
 
 renderTasks();
 updateProgress();
